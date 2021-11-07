@@ -9,25 +9,27 @@ const User = require('../models/user');
 const Cart = require('../models/cart');
 
 console.log(stripe);
-paymentRouter.get('/checkout',async(req,res) =>{
+paymentRouter.get('/checkout/:id',async(req,res) =>{
     // console.log("chalra");
 
-    Cart.findOne({user: req.body.userId}).populate('user').populate('productId').exec(async(err,cart) =>{
+    Cart.findOne({user: req.params.id}).populate('user').populate('products.productId').exec(async(err,cart) =>{
         if(err){
             return res.status(404).send({message: "some db error occured"});
         }
-
+        // print(cart)
+        console.log(cart);
         if(cart.products.length===0){
             return res.status(400).send({message: "nothing in cart to checkout"});
         }
 
-        items=[];
+        let items=[];
         for(let i=0;i<cart.products.length;i++){
+            let item={};
             item.price_data={
                 currency: 'inr',
                 product_data: {
                     name: cart.products[i].productId.name,
-                    images: [cart.products[i].productId.images[0]]
+                    images: ["check"]
                 },
                 unit_amount: cart.products[i].productId.price
             };
@@ -38,30 +40,7 @@ paymentRouter.get('/checkout',async(req,res) =>{
         const session = await stripe.checkout.sessions.create({
             customer_email: cart.user.email,
             payment_method_types: ['card'],
-            line_items: [
-                {
-                    price_data: {
-                        currency: "inr",
-                        product_data: {
-                            name: "check1",
-                            images: ['check'],
-                        },
-                        unit_amount: 200 * 100,
-                    },
-                    quantity: 2,
-                },
-                {
-                    price_data: {
-                        currency: "inr",
-                        product_data: {
-                            name: "check2",
-                            images: ['check'],
-                        },
-                        unit_amount: 400 * 100,
-                    },
-                    quantity: 5,
-                }
-            ],
+            line_items: items,
             mode: "payment",
             success_url: `${process.env.frontURL}ordersuccess`,
             cancel_url: `${process.env.frontURL}orderfailure`,

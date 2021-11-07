@@ -1,10 +1,55 @@
 const express = require('express');
 const cartRouter = express.Router();
 const mongoose = require('mongoose');
-
+var ObjectId = require('mongodb').ObjectId;
 //models
 const User = require('../models/user');
 const Cart = require('../models/cart');
+const Product = require('../models/product');
+
+
+cartRouter.post("/add", (req, res) => {
+
+
+    Product.findById(req.body.productId).exec((err, product) => {
+
+        if (err) {
+            return res.status(400).send({ "message": "some error occured in db" });
+
+        }
+        if (req.body.quantity > product.quantity) {
+            req.body.quantity = product.quantity;
+        }
+
+        Cart.findOneAndUpdate({ "user": req.body.userId }, { "$set": { "user": req.body.userId }, "$addToSet": { "products": { "productId": ObjectId(req.body.productId), "quantity": req.body.quantity } } }, { "new": true, "upsert": true })
+            .populate('products.productId').exec((err, cart) => {
+
+                if (err) {
+                    return res.status(400).send({ "message": "some error occured in db" });
+
+                }
+
+                return res.status(200).send(cart);
+            });
+
+    });
+
+});
+
+cartRouter.get("/:id", (req, res) => {
+
+    Cart.find({ user: req.params.id }).populate('products.productId').exec((err, cart) => {
+        if (err) {
+            return res.status(400).send({ "message": "some error occured in db" });
+
+        }
+        return res.status(200).send(cart);
+    });
+});
+
+
+
+
 
 
 
