@@ -92,7 +92,7 @@ route.post('/user/login', async (req, res, next) => {
     const token = JWT.sign({ _id: existingUser._id }, "shjvshfu");
     res.header("auth_token", token).json({
       auth_token: token,
-      userId: existingUser._id,
+      user: existingUser,
     });
     next();
   } catch (error) {
