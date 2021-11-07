@@ -7,7 +7,7 @@ let paymentRouter = require('./routes/payment.server.routes');
 let addressRouter = require('./routes/address.server.routes');
 let productRouter = require('./routes/product.server.routes');
 let cartRouter = require('./routes/cart.server.routes');
-const userRoutes = require('./routes/userRoutes')
+const userRoutes = require('./routes/user.server.routes');
 
 
 

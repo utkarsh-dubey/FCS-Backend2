@@ -15,6 +15,10 @@ const productSchema = new Schema({
             required: true,
             unique: true
         },
+        images: [{
+            type : String
+        }
+        ],
         price: {
             type: Number,   //in paise
             required: true
