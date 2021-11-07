@@ -52,6 +52,7 @@ route.post("/user/signup", async (req, res, next) => {
   }
   try {
     await user.save();
+    console.log("helloooooo");
   } catch (error) {
     console.log(error);
     const err = new Error("could not sign up try again");
