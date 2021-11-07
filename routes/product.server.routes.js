@@ -22,7 +22,15 @@ productRouter.get("/",(req,res) =>{
 });
 
 productRouter.get('/:id',(req,res) => {
-    
+    Product.findById(req.params.id).exec((err,product) => {
+
+        if(err){
+            return res.status(400).send({message:"some error occured in db"});
+        }
+
+        return res.status(200).send(product);
+
+    });
 });
 
 
