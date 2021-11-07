@@ -5,3 +5,11 @@ const mongoose = require('mongoose');
 //models
 const User = require('../models/user');
 const Product = require('../models/product');
+
+
+
+
+
+
+
+module.exports = productRouter;
