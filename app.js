@@ -6,7 +6,12 @@ let paymentRouter = require('./routes/payment.server.routes');
 let addressRouter = require('./routes/address.server.routes');
 let productRouter = require('./routes/product.server.routes');
 let cartRouter = require('./routes/cart.server.routes');
-
+app.use((req, res, next)=>{
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
+  next()
+})
 const userRoutes = require('./routes/userRoutes')
 
 
