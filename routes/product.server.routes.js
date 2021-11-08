@@ -9,8 +9,13 @@ const PDF = require('../models/pdfs');
 
 
 productRouter.get("/",(req,res) =>{
-
-    Product.find({}).exec((err,products) => {
+    let search=req.query.search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    let query={};
+    if(req.query.search){
+        query={'$or' : [{'name' : {$regex :search, $options:'ix'}},{'category' :{$regex :search, $options:'ix'}}]};
+    }
+    
+    Product.find(query).exec((err,products) => {
 
         if(err){
             return res.status(400).send({message:"some error occured in db"});

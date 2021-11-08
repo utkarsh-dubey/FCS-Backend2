@@ -26,9 +26,8 @@ cartRouter.post("/add", (req, res) => {
 
                 if (err) {
                     return res.status(400).send({ "message": "some error occured in db" });
-
                 }
-
+                
                 return res.status(200).send(cart);
             });
 
