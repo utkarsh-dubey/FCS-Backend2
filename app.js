@@ -8,6 +8,7 @@ let addressRouter = require('./routes/address.server.routes');
 let productRouter = require('./routes/product.server.routes');
 let cartRouter = require('./routes/cart.server.routes');
 const userRoutes = require('./routes/user.server.routes');
+const passport = require('passport');
 
 
 
@@ -28,7 +29,7 @@ connect.then((db) => {
   console.log("Connected to db successful");
 }, (err) => { console.log("Unable to connect to the db " + err); });
 
-
+app.use(passport.initialize());
 app.use('/payment', paymentRouter);
 app.use('/cart',cartRouter);
 app.use('/address',addressRouter);

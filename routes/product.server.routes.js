@@ -1,14 +1,15 @@
 const express = require('express');
 const productRouter = express.Router();
 const mongoose = require('mongoose');
-
+var passport = require('passport');
 //models
 const User = require('../models/user');
 const Product = require('../models/product');
 const PDF = require('../models/pdfs');
 
 
-productRouter.get("/",(req,res) =>{
+
+productRouter.get("/",passport.authenticate('jwt'),(req,res) =>{
     
     let query={};
     if(req.query.search){
@@ -56,7 +57,6 @@ productRouter.post('/add/:id',(req,res) =>{
             if(!pdf.isApproved){
                 return res.status(400).send({message:"this product is not approved by the admin"});
             }
-
             let product = req.body;
             Product.create(product).then((product) => {
                 res.status(200).send({message:"product created"});
@@ -104,9 +104,6 @@ productRouter.post('admin/reject/:id',(res,req) =>{
         });
     });
 });
-
-
-
 
 
 

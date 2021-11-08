@@ -10,11 +10,6 @@ const PDF = require('../models/pdfs');
 
 
 
-
-
-
-
-
 pdfRouter.post('/submitpdf/:id' ,(req,res) =>{
     User.findById(req.params.id).exec((err,user) =>{
         if(err){

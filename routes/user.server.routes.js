@@ -8,7 +8,7 @@ const bcrypt = require("bcryptjs");
 const route = express.Router();
 const JWT = require("jsonwebtoken");
 const mongoose = require("mongoose");
-
+var authenticate = require('../middleware/authenticate');
 route.post("/user/signup", async (req, res, next) => {
   // const errors = validationResult(req);
   // if (!errors.isEmpty()) {
@@ -90,7 +90,7 @@ route.post('/user/login', async (req, res, next) => {
   }
   //creating token
   try {
-    const token = JWT.sign({ _id: existingUser._id }, "shjvshfu");
+    const token = authenticate.getToken({ _id: existingUser._id });
     res.header("auth_token", token).json({
       auth_token: token,
       user: existingUser,

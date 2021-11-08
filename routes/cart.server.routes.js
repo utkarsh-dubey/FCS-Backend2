@@ -2,6 +2,7 @@ const express = require('express');
 const cartRouter = express.Router();
 const mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectId;
+const authenticate = require('../middleware/authenticate');
 //models
 const User = require('../models/user');
 const Cart = require('../models/cart');
@@ -35,7 +36,7 @@ cartRouter.post("/add", (req, res) => {
 
 });
 
-cartRouter.get("/:id", (req, res) => {
+cartRouter.get("/:id",authenticate.matchIdandJwt, (req, res) => {
 
     Cart.find({ user: req.params.id }).populate('products.productId').exec((err, cart) => {
         if (err) {
@@ -43,6 +44,7 @@ cartRouter.get("/:id", (req, res) => {
         }
         return res.status(200).send(cart);
     });
+
 });
 
 function getMap(id){
