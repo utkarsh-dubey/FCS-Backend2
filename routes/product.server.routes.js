@@ -9,9 +9,10 @@ const PDF = require('../models/pdfs');
 
 
 productRouter.get("/",(req,res) =>{
-    let search=req.query.search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+    
     let query={};
     if(req.query.search){
+        let search=req.query.search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
         query={'$or' : [{'name' : {$regex :search, $options:'ix'}},{'category' :{$regex :search, $options:'ix'}}]};
     }
     
