@@ -8,7 +8,7 @@ const stripe = Stripe("sk_test_51Jt7lhSEpQXgH7SXmbJv8iITVT1gYSvnoz2hznFjRtHIfVxf
 const User = require('../models/user');
 const Cart = require('../models/cart');
 
-console.log(stripe);
+// console.log(stripe);
 paymentRouter.get('/checkout/:id',async(req,res) =>{
     // console.log("chalra");
 

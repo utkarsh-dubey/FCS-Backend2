@@ -9,7 +9,7 @@ const pdfSchema = new Schema({
         ref: user
     },
     pdf: {
-        type: String,
+        type: Schema.Types.Buffer,
         required: true
     },
     isApproved: {
