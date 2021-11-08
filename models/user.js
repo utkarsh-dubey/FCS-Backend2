@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const address = require('./address');
 
 const userSchema = new Schema({
     firstName: {
@@ -26,7 +26,8 @@ const userSchema = new Schema({
         type: String
     },
     address: [{
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
+        ref: address
     }],
     cartItems: [{
         type: Schema.Types.ObjectId

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const user = require('./user');
 const productSchema = new Schema({
         name: {
             type: String,
@@ -8,7 +8,8 @@ const productSchema = new Schema({
         },
         sellerId: {
             type: Schema.Types.ObjectId,
-            required: true
+            required: true,
+            ref: user
         },
         sku: {
             type: String,

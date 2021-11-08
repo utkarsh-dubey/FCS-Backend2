@@ -6,7 +6,7 @@ var ObjectId = require('mongodb').ObjectId;
 const User = require('../models/user');
 const Cart = require('../models/cart');
 const Product = require('../models/product');
-
+const mailer = require('./mailer');
 
 cartRouter.post("/add", (req, res) => {
 
@@ -46,6 +46,36 @@ cartRouter.get("/:id", (req, res) => {
         return res.status(200).send(cart);
     });
 });
+
+
+cartRouter.get("/checkout/:id",(req,res) =>{
+
+    
+});
+
+
+// const mailData = {
+//     recv: "robin19092@iiitd.ac.in",
+//     otp: {
+//         "verificationOtp": 12345
+//     }
+// };
+
+// mailer(mailData).then((value) => {
+//     res.statusCode = 200;
+//     res.setHeader('Content-Type', 'application/json');
+//     res.json({
+//         msg: 'Otp sent'
+//     });
+// })
+// .catch((err) => {
+//     console.log(err);
+//     res.statusCode = 400;
+//     res.setHeader('Content-Type', 'application/json');
+//     res.json({
+//         msg: 'otp send failed'
+//     });
+// });
 
 
 
