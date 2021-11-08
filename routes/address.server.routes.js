@@ -5,6 +5,28 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 const Address = require('../models/address');
 
+addressRouter.get('/:id',(req,res)=>{
+    Address.find({user: req.params.id}).exec((err, address)=>{
+        if(err){
+            return res.status(400).send({message:"some error in db"});
+        }
+        if(address.length===0){
+            return res.status(200).send({noAddress: true});
+        }
+        return res.status(200).send({noAddress: false, address: address});
+    });
+});
+
+addressRouter.post('/add/:id',(req,res)=>{
+    Address.create(req.body).then((address)=>{
+        User.findByIdAndUpdate(req.params.id,{"$addToSet":{"address":address._id}}).exec((err,user)=>{
+            if(err){
+                return res.status(400).send({message:"some error in db"});
+            }
+            return res.status(200).send({message:"added successfully"});
+        })
+    })
+});
 
 
 

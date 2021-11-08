@@ -27,7 +27,7 @@ cartRouter.post("/add", (req, res) => {
                 if (err) {
                     return res.status(400).send({ "message": "some error occured in db" });
                 }
-                
+
                 return res.status(200).send(cart);
             });
 
@@ -40,7 +40,6 @@ cartRouter.get("/:id", (req, res) => {
     Cart.find({ user: req.params.id }).populate('products.productId').exec((err, cart) => {
         if (err) {
             return res.status(400).send({ "message": "some error occured in db" });
-
         }
         return res.status(200).send(cart);
     });
