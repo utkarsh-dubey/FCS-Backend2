@@ -21,7 +21,7 @@ const productSchema = new Schema({
         }
         ],
         price: {
-            type: Number,   //in paise
+            type: Number,   //in rupee
             required: true
         },
         commission: {

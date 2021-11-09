@@ -31,7 +31,7 @@ paymentRouter.get('/checkout/:id',async(req,res) =>{
                     name: cart.products[i].productId.name,
                     images: ["check"]
                 },
-                unit_amount: cart.products[i].productId.price
+                unit_amount: cart.products[i].productId.price*100
             };
             item.quantity=cart.products[i].quantity;
             items.push(item);

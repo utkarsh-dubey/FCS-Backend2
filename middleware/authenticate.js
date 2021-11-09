@@ -51,19 +51,15 @@ passport.deserializeUser((id, done) => {
 //   });
 
 
-exports.matchIdandJwt = function(req,res) {
-    // console.log("kuch aaya kya",req);
-    let check=passport.use(new JwtStrategy(opts,
-        (jwt_payload, done) => {
-            console.log("gggggggggggggg",jwt_payload);
-            if (req.params.id===jwt_payload._id) {
-                return done(null,"okay");
-            }
-            else {
-                return done(null, false);
-            }
-    }));
-    console.log("ccccccccccccc",check)
+exports.matchIdandJwt = function(req,res,next) {
+    let jwtToken = req.headers.authorization.replace('Bearer ', '');
+    let decoded=jwt.verify(jwtToken, opts.secretOrKey);
+    if(!(decoded._id===req.params.id)){
+        res.status(403).send({message: "route id mismatch, use correct id"});
+    }
+    else{
+        next();
+    }
 };
 
 
