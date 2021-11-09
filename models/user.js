@@ -34,6 +34,18 @@ const userSchema = new Schema({
     }],
     googleId: {
         type: String,
+    },
+    phoneNumber: {
+        type: 'String'
+    },
+    GstNumber: {
+        type: 'String'
+    },
+    PanNumber: {
+        type: 'String'
+    },
+    isSeller: {
+        type: Boolean
     }
 }, { timestamps: true });
 
