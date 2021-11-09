@@ -148,7 +148,7 @@ cartRouter.get("/checkout/:id",(req,res) =>{
                 check2+=1;
             }
             if(check2===map2.size){
-                Cart.find({ user: req.params.id }).exec((err, cart) => {
+                Cart.find({ user: req.params.id }).populate('products.productId').exec((err, cart) => {
                     return res.status(200).send(cart);
                 });
             }
