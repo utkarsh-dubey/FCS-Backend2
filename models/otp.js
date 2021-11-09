@@ -3,13 +3,12 @@ const Schema = mongoose.Schema;
 const user = require('./user');
 
 const otpSchema = new Schema({
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: user,
+    email: {
+        type: String,
         required: true
     },
     otp:{
-        type: Number,
+        type: String,
         required: true
     },
     creadtedOn: {
