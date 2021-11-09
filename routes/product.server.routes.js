@@ -2,6 +2,7 @@ const express = require('express');
 const productRouter = express.Router();
 const mongoose = require('mongoose');
 var passport = require('passport');
+const cloudinary = require('./cloudinary');
 //models
 const User = require('../models/user');
 const Product = require('../models/product');
@@ -103,6 +104,22 @@ productRouter.post('admin/reject/:id',(res,req) =>{
             res.status(200).send({message:"rejected"});
         });
     });
+});
+
+
+productRouter.post('/imageupload',async(req,res)=>{
+    try{
+    let image=req.body.image;
+    // console.log(image);
+    // console.log(req.body);
+    const uploadResponse = await cloudinary.uploader.upload(image,{upload_preset:'ml_default'});
+    // console.log(uploadResponse);
+    return res.status(200).send({link:uploadResponse.url});
+    }
+    catch(err){
+        console.log(err);
+        return res.status(400).send(err);
+    }
 });
 
 

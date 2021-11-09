@@ -14,12 +14,16 @@ const passport = require('passport');
 
 require('dotenv/config');
 const port = 7000;
-app.use(bodyParser.json());
-// app.use(
-//   cors({
-//     origin: ["http://localhost:3000", "https://checkout.stripe.com"],
-//   })
-// );
+app.use(bodyParser.json({
+  parameterLimit: 100000,
+  limit: '50mb',
+  extended: true
+}));
+// // app.use(
+// //   cors({
+// //     origin: ["http://localhost:3000", "https://checkout.stripe.com"],
+// //   })
+// // );
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -33,7 +37,11 @@ app.use((req, res, next)=>{
   next()
 })
 
-app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({
+  parameterLimit: 100000,
+  limit: '50mb',
+  extended: true
+})); 
 
 const connect = mongoose.connect(process.env.mongoUrl, { useNewUrlParser: true, keepAlive: true, useUnifiedTopology: true });
 connect.then((db) => {

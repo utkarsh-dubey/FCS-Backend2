@@ -8,7 +8,14 @@ const User = require('../models/user');
 const Product = require('../models/product');
 const PDF = require('../models/pdfs');
 
-
+pdfRouter.get('/:id',(req,res)=>{
+    PDF.find({sellerId: req.params.id}).exec((err,pdfs)=>{
+        if(err){
+            return res.status(400).send({message:"some error in db"});
+        }
+        return res.status(200).send(pdfs);
+    });
+})
 
 pdfRouter.post('/submitpdf/:id' ,(req,res) =>{
     User.findById(req.params.id).exec((err,user) =>{
