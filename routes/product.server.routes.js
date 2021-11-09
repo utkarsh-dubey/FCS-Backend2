@@ -9,7 +9,7 @@ const PDF = require('../models/pdfs');
 
 
 
-productRouter.get("/",passport.authenticate('jwt'),(req,res) =>{
+productRouter.get("/",(req,res) =>{
     
     let query={};
     if(req.query.search){
