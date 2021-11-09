@@ -15,11 +15,11 @@ const passport = require('passport');
 require('dotenv/config');
 const port = 7000;
 app.use(bodyParser.json());
-app.use(
-  cors({
-    origin: ["http://localhost:3000", "https://checkout.stripe.com"],
-  })
-);
+// app.use(
+//   cors({
+//     origin: ["http://localhost:3000", "https://checkout.stripe.com"],
+//   })
+// );
 app.use((req, res, next)=>{
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
