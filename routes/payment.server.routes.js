@@ -46,7 +46,7 @@ paymentRouter.get('/checkout/:id',async(req,res) =>{
             cancel_url: `${process.env.frontURL}orderfailure`,
         });
     
-        res.redirect(303,session.url);
+        res.json({url: session.url});
 
 
     });
