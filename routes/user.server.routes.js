@@ -102,5 +102,12 @@ route.post('/user/login', async (req, res, next) => {
   }
 });
 
+route.get('/user/:id', async(req, res, next) => {
+  const id = req.params.id;
+  console.log(id)
+  const existingUser = await User.findOne({ _id: id });
+  res.json(existingUser);
+})
+
 
 module.exports = route;
