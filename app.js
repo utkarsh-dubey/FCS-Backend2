@@ -8,6 +8,7 @@ let addressRouter = require('./routes/address.server.routes');
 let productRouter = require('./routes/product.server.routes');
 let cartRouter = require('./routes/cart.server.routes');
 const userRoutes = require('./routes/user.server.routes');
+const pdfServerRoutes = require('./routes/pdf.server.routes');
 const passport = require('passport');
 
 
@@ -53,6 +54,7 @@ app.use('/payment', paymentRouter);
 app.use('/cart',cartRouter);
 app.use('/address',addressRouter);
 app.use('/product',productRouter);
+app.use('/pdf',pdfServerRoutes);
 app.get('/', (req, res) => {
   res.send('Hello World!')
 });
