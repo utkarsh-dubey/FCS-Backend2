@@ -36,7 +36,7 @@ cartRouter.post("/add", (req, res) => {
 
 });
 
-cartRouter.get("/:id", (req, res) => {
+cartRouter.route("/:id").get((req, res) => {
 
     Cart.find({ user: req.params.id }).populate('products.productId').exec((err, cart) => {
         if (err) {
@@ -46,6 +46,24 @@ cartRouter.get("/:id", (req, res) => {
     });
 
 });
+
+
+cartRouter.route("/remove/:id").post((req,res) => {
+    if(!req.query.productId){
+        return res.status(400).send({message:"No product id found for deletion"});
+    }
+    req.body.productId=ObjectId(req.body.productId);
+    req.body._id=ObjectId(req.body._id);
+    // console.log("happening");
+    // console.log("ssssssssssssss",req.body);
+    Cart.findOneAndUpdate({user: req.params.id},{"$set": { "user": req.params.id },'$pull': {'products':req.body}}).then((update)=>{
+        // console.log("sffffffffffffffffffffffffff",update);
+        return res.status(200).send({message:"cart updated"});
+    }).catch((err)=>{
+        console.log(err);
+        return res.status(400).send(err);
+    });
+})
 
 function getMap(id){
 

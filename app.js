@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-
+const rateLimit = require("express-rate-limit");
 const bodyParser = require('body-parser');
 let paymentRouter = require('./routes/payment.server.routes');
 let addressRouter = require('./routes/address.server.routes');
@@ -20,6 +20,12 @@ app.use(bodyParser.json());
 //     origin: ["http://localhost:3000", "https://checkout.stripe.com"],
 //   })
 // );
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 1000 // limit each IP to 100 requests per windowMs
+});
+
 app.use((req, res, next)=>{
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
@@ -33,7 +39,7 @@ const connect = mongoose.connect(process.env.mongoUrl, { useNewUrlParser: true, 
 connect.then((db) => {
   console.log("Connected to db successful");
 }, (err) => { console.log("Unable to connect to the db " + err); });
-
+app.use(limiter);
 app.use(passport.initialize());
 app.use('/payment', paymentRouter);
 app.use('/cart',cartRouter);
