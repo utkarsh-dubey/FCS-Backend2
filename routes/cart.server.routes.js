@@ -36,7 +36,7 @@ cartRouter.post("/add", (req, res) => {
 
 });
 
-cartRouter.get("/:id",authenticate.matchIdandJwt, (req, res) => {
+cartRouter.get("/:id", (req, res) => {
 
     Cart.find({ user: req.params.id }).populate('products.productId').exec((err, cart) => {
         if (err) {
