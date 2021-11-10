@@ -11,7 +11,7 @@ var config = require('../config.js');
 exports.getToken = function (user) {
     return jwt.sign(user, config.secretKey,
         //expires in 2 hour
-        { expiresIn: 7200});
+        { expiresIn: 60});
 };
 
 var opts = {};

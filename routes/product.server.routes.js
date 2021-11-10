@@ -1,7 +1,8 @@
 const express = require('express');
 const productRouter = express.Router();
 const mongoose = require('mongoose');
-var passport = require('passport');
+const passport = require('passport');
+const authenticate = require('../middleware/authenticate');
 const cloudinary = require('./cloudinary');
 var multer = require('multer');
 const otpGenerator = require('otp-generator');
@@ -41,13 +42,15 @@ productRouter.get('/:id',(req,res) => {
         if(err){
             return res.status(400).send({message:"some error occured in db"});
         }
-
+        if(!product.isAllowed){
+            return res.status(400).send({message:"product has been removed"});
+        }
         return res.status(200).send(product);
 
     });
 });
 
-productRouter.post('/add/:id',(req,res) =>{
+productRouter.post('/add/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res) =>{
     let pdfId = req.query.pdfId;
     User.findById(req.params.id).exec((err,user) =>{
         if(err){
@@ -85,7 +88,7 @@ productRouter.post('/add/:id',(req,res) =>{
 
 
 
-productRouter.post('/imageupload',upload.any(),async(req,res)=>{
+productRouter.post('/imageupload',passport.authenticate('jwt'),upload.any(),async(req,res)=>{
     try{
         // console.log(req);
         let images=req.files;
@@ -105,7 +108,7 @@ productRouter.post('/imageupload',upload.any(),async(req,res)=>{
     }
 });
 
-productRouter.post('/pdfupload/:id',upload.single('pdf'),async(req,res)=>{
+productRouter.post('/pdfupload/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,upload.single('pdf'),async(req,res)=>{
     try{
         User.findById(req.params.id).exec(async(err,user) =>{
             if(err){
@@ -139,7 +142,7 @@ productRouter.post('/pdfupload/:id',upload.single('pdf'),async(req,res)=>{
     }
 });
 
-productRouter.post('/share/:id',(req,res)=>{
+productRouter.post('/share/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
     let send=req.body;
     console.log(send);
     let data={

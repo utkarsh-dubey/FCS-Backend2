@@ -2,13 +2,14 @@
 const express = require('express');
 const pdfRouter = express.Router();
 const mongoose = require('mongoose');
-
+const passport = require('passport');
+const authenticate = require('../middleware/authenticate');
 //models
 const User = require('../models/user');
 const Product = require('../models/product');
 const PDF = require('../models/pdfs');
 
-pdfRouter.get('/:id',(req,res)=>{
+pdfRouter.get('/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
     PDF.find({sellerId: req.params.id}).exec((err,pdfs)=>{
         if(err){
             return res.status(400).send({message:"some error in db"});
@@ -17,7 +18,7 @@ pdfRouter.get('/:id',(req,res)=>{
     });
 })
 
-pdfRouter.post('/submitpdf/:id' ,(req,res) =>{
+pdfRouter.post('/submitpdf/:id' ,passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res) =>{
     User.findById(req.params.id).exec((err,user) =>{
         if(err){
             return res.status(400).send({message:"some error occured in db"});
@@ -45,7 +46,7 @@ pdfRouter.post('/submitpdf/:id' ,(req,res) =>{
     });
 });
 
-pdfRouter.get('/:id',(req,res)=>{
+pdfRouter.get('/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
     PDF.find({sellerId: req.params.id}).exec((err,pdfs)=>{
         if(err){
             return res.status(400).send({message:"some error in db"});
@@ -54,7 +55,7 @@ pdfRouter.get('/:id',(req,res)=>{
     });
 })
 
-pdfRouter.get('/',(req,res)=>{
+pdfRouter.get('/',passport.authenticate('jwt'),(req,res)=>{
     PDF.find({}).exec((err,pdfs)=>{
         if(err){
             return res.status(400).send({message:"some error in db"});

@@ -1,7 +1,8 @@
 const express = require('express');
 const adminRouter = express.Router();
 const mongoose = require('mongoose');
-var passport = require('passport');
+const passport = require('passport');
+const authenticate = require('../middleware/authenticate');
 const cloudinary = require('./cloudinary');
 var multer = require('multer');
 const otpGenerator = require('otp-generator');
@@ -13,7 +14,7 @@ const Product = require('../models/product');
 const PDF = require('../models/pdfs');
 
 
-adminRouter.post('/approve/:id',(req,res) =>{
+adminRouter.post('/approve/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res) =>{
     let pdfId = req.query.pdfId;
     User.findById(req.params.id).exec((err,user) =>{
         if(err){
@@ -31,7 +32,7 @@ adminRouter.post('/approve/:id',(req,res) =>{
     });
 });
 
-adminRouter.post('/reject/:id',(req,res) =>{
+adminRouter.post('/reject/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res) =>{
     let pdfId = req.query.pdfId;
     User.findById(req.params.id).exec((err,user) =>{
         if(err){
@@ -50,7 +51,7 @@ adminRouter.post('/reject/:id',(req,res) =>{
 });
 
 
-adminRouter.post('/banuser/:id',(req,res)=>{
+adminRouter.post('/banuser/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
     let userId=req.query.user;
     User.findById(req.params.id).exec((err,user) =>{
         if(err){
@@ -67,7 +68,7 @@ adminRouter.post('/banuser/:id',(req,res)=>{
     });
 });
 
-adminRouter.post('/banproduct/:id',(req,res)=>{
+adminRouter.post('/banproduct/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
     let productId=req.query.product;
     User.findById(req.params.id).exec((err,user) =>{
         if(err){
@@ -84,7 +85,7 @@ adminRouter.post('/banproduct/:id',(req,res)=>{
     });
 });
 
-adminRouter.post('/adduser/:id',(req,res)=>{
+adminRouter.post('/adduser/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
     let user=req.body;
     User.findById(req.params.id).exec((err,user) =>{
         if(err){
@@ -102,7 +103,7 @@ adminRouter.post('/adduser/:id',(req,res)=>{
 });
 
 
-adminRouter.post('/addproduct/:id',(req,res)=>{
+adminRouter.post('/addproduct/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
     let product=req.body;
     User.findById(req.params.id).exec((err,user) =>{
         if(err){

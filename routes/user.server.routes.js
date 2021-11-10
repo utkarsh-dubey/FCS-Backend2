@@ -8,7 +8,8 @@ const bcrypt = require("bcryptjs");
 const route = express.Router();
 const JWT = require("jsonwebtoken");
 const mongoose = require("mongoose");
-var authenticate = require('../middleware/authenticate');
+const passport = require('passport');
+const authenticate = require('../middleware/authenticate');
 const Product = require('../models/product');
 
 route.get('/sendotp',(req,res)=>{
@@ -166,14 +167,14 @@ route.post('/user/login', async (req, res, next) => {
   }
 });
 
-route.get('/user/:id', async(req, res, next) => {
+route.get('/user/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt, async(req, res, next) => {
   const id = req.params.id;
   console.log(id)
   const existingUser = await User.findOne({ _id: id });
   res.json(existingUser);
 })
 
-route.post('/become/seller/:id', async(req, res, next) => {
+route.post('/become/seller/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt, async(req, res, next) => {
   const id = req.params.id;
   console.log(id)
   const existingUser = await User.findOne({ _id: id });
@@ -184,7 +185,7 @@ route.post('/become/seller/:id', async(req, res, next) => {
   await existingUser.save();
 })
 
-route.get('/get/users', async(req, res, next)=>{
+route.get('/get/users',passport.authenticate('jwt'), async(req, res, next)=>{
   const users = await User.find({});
   console.log(users)
   res.json(users);

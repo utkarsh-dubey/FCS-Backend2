@@ -2,6 +2,7 @@ const express = require('express');
 const cartRouter = express.Router();
 const mongoose = require('mongoose');
 var ObjectId = require('mongodb').ObjectId;
+const passport = require('passport');
 const authenticate = require('../middleware/authenticate');
 //models
 const User = require('../models/user');
@@ -9,7 +10,7 @@ const Cart = require('../models/cart');
 const Product = require('../models/product');
 const mailer = require('./mailer');
 
-cartRouter.post("/add", (req, res) => {
+cartRouter.post("/add",passport.authenticate('jwt'), (req, res) => {
 
 
     Product.findById(req.body.productId).exec((err, product) => {
@@ -36,7 +37,7 @@ cartRouter.post("/add", (req, res) => {
 
 });
 
-cartRouter.route("/:id").get((req, res) => {
+cartRouter.route("/:id").get(passport.authenticate('jwt'),authenticate.matchIdandJwt,(req, res) => {
 
     Cart.find({ user: req.params.id }).populate('products.productId').exec((err, cart) => {
         if (err) {
@@ -48,7 +49,7 @@ cartRouter.route("/:id").get((req, res) => {
 });
 
 
-cartRouter.route("/remove/:id").post((req,res) => {
+cartRouter.route("/remove/:id").post(passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res) => {
     if(!req.body.productId){
         return res.status(400).send({message:"No product id found for deletion"});
     }
@@ -117,7 +118,7 @@ function getMap(id){
     return mappy;
 }
 
-cartRouter.get("/checkout/:id",(req,res) =>{
+cartRouter.get("/checkout/:id",passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res) =>{
 
 
 

@@ -4,8 +4,10 @@ const mongoose = require('mongoose');
 //models
 const User = require('../models/user');
 const Address = require('../models/address');
+const passport = require('passport');
+const authenticate = require('../middleware/authenticate');
 
-addressRouter.get('/:id',(req,res)=>{
+addressRouter.get('/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
     Address.find({user: req.params.id}).exec((err, address)=>{
         if(err){
             return res.status(400).send({message:"some error in db"});
@@ -17,7 +19,7 @@ addressRouter.get('/:id',(req,res)=>{
     });
 });
 
-addressRouter.post('/add/:id',(req,res)=>{
+addressRouter.post('/add/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
     Address.create(req.body).then((address)=>{
         User.findByIdAndUpdate(req.params.id,{"$addToSet":{"address":address._id}}).exec((err,user)=>{
             if(err){
