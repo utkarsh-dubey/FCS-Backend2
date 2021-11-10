@@ -45,6 +45,23 @@ pdfRouter.post('/submitpdf/:id' ,(req,res) =>{
     });
 });
 
+pdfRouter.get('/:id',(req,res)=>{
+    PDF.find({sellerId: req.params.id}).exec((err,pdfs)=>{
+        if(err){
+            return res.status(400).send({message:"some error in db"});
+        }
+        return res.status(200).send(pdfs);
+    });
+})
+
+pdfRouter.get('/',(req,res)=>{
+    PDF.find({}).exec((err,pdfs)=>{
+        if(err){
+            return res.status(400).send({message:"some error in db"});
+        }
+        return res.status(200).send(pdfs);
+    });
+})
 
 
 

@@ -158,5 +158,22 @@ route.get('/user/:id', async(req, res, next) => {
   res.json(existingUser);
 })
 
+route.post('/become/seller/:id', async(req, res, next) => {
+  const id = req.params.id;
+  console.log(id)
+  const existingUser = await User.findOne({ _id: id });
+  existingUser.GstNumber = req.body.gstNumber
+  existingUser.PanNumber = req.body.panNumber
+  existingUser.isSeller = req.body.isSeller
+  // console.log(existingUser, "{{}}");
+  await existingUser.save();
+})
+
+route.get('/get/users', async(req, res, next)=>{
+  const users = await User.find({});
+  console.log(users)
+  res.json(users);
+})
+
 
 module.exports = route;
