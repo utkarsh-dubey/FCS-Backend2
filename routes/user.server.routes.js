@@ -186,9 +186,17 @@ route.post('/become/seller/:id',passport.authenticate('jwt'),authenticate.matchI
 })
 
 route.get('/get/users/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt, async(req, res, next)=>{
-  const users = await User.find({});
-  console.log(users)
-  res.json(users);
+    User.findById(req.params.id).exec(async(err,user) =>{
+        if(err){
+            return res.status(400).send({message:"some error occured in db"});
+        }
+        if(!user.isAdmin){
+            return res.status(403).send({message:"you are not an admin"});
+        }
+        const users = await User.find({});
+        console.log(users)
+        res.json(users);
+    });
 })
 
 

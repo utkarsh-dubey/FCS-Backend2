@@ -56,11 +56,19 @@ pdfRouter.get('/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(re
 })
 
 pdfRouter.get('/all/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
-    PDF.find({}).exec((err,pdfs)=>{
+    User.findById(req.params.id).exec(async(err,user) =>{
         if(err){
-            return res.status(400).send({message:"some error in db"});
+            return res.status(400).send({message:"some error occured in db"});
         }
-        return res.status(200).send(pdfs);
+        if(!user.isAdmin){
+            return res.status(403).send({message:"you are not an admin"});
+        }
+        PDF.find({}).exec((err,pdfs)=>{
+            if(err){
+                return res.status(400).send({message:"some error in db"});
+            }
+            return res.status(200).send(pdfs);
+        });
     });
 })
 
