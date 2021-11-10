@@ -1,4 +1,4 @@
-const otpGenerator = require('otp-generator')
+const otpGenerator = require('otp-generator');
 const OTP = require('../models/otp');
 const mailer = require('./mailer');
 function otpSend(email) {

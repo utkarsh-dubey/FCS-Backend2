@@ -14,7 +14,7 @@ const productSchema = new Schema({
         sku: {
             type: String,
             required: true,
-            unique: true
+            // unique: true
         },
         images: [{
             type : String
@@ -44,6 +44,10 @@ const productSchema = new Schema({
         description: {
             type: String,
             required: true
+        },
+        isAllowed: {
+            type: Boolean,
+            default: true
         }
 });
 

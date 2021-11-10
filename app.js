@@ -10,6 +10,8 @@ let cartRouter = require('./routes/cart.server.routes');
 const userRoutes = require('./routes/user.server.routes');
 const pdfServerRoutes = require('./routes/pdf.server.routes');
 const passport = require('passport');
+var multer = require('multer');
+var upload = multer();
 
 
 
@@ -37,7 +39,7 @@ app.use((req, res, next)=>{
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
   next()
 })
-
+// app.use(upload.array()); 
 app.use(bodyParser.urlencoded({
   parameterLimit: 100000,
   limit: '50mb',

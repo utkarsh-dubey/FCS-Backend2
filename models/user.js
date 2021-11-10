@@ -45,7 +45,12 @@ const userSchema = new Schema({
         type: 'String'
     },
     isSeller: {
-        type: Boolean
+        type: Boolean,
+        default: false
+    },
+    isAllowed: {
+        type: Boolean,
+        default: true
     }
 }, { timestamps: true });
 
