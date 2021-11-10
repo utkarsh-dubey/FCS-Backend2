@@ -46,7 +46,10 @@ function otpSend(email) {
 function otpVerify(email,otpEntered){
     return new Promise((resolve,reject)=>{
         let time=new Date();
-        OTP.find({email: email, createdOn:{'$gte':(time).setTime(time.getTime()-(2*60*1000))}}).exec((err,otp)=>{
+        // console.log(time);
+        ((time).setTime(time.getTime()-(2*60*1000)));
+        // console.log(time);
+        OTP.find({email: email, createdOn:{'$gte':time}}).exec((err,otp)=>{
             if(err){
                 reject(err);
                 return;

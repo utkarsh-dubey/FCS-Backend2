@@ -11,8 +11,9 @@ const otpSchema = new Schema({
         type: String,
         required: true
     },
-    creadtedOn: {
-        type: Date
+    createdOn: {
+        type: Date,
+        default: new Date()
     }
 });
 
