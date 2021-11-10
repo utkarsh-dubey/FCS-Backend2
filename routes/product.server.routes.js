@@ -66,7 +66,12 @@ productRouter.post('/add/:id',(req,res) =>{
             product.commission = 0.1*(product.price);
             product.sku = otpGenerator.generate(6,{digits:false});
             Product.create(product).then((product) => {
-                res.status(200).send({message:"product created"});
+                PDF.findByIdAndUpdate(pdfId,{'$set':{isPublished:true}}).then((done)=>{
+                    res.status(200).send({message:"product created"});
+                }).catch((err)=>{
+                    res.status(400).send({message:"some error while creating product"});
+                })
+                // res.status(200).send({message:"product created"});
             })
             .catch((err)=>{
                 res.status(400).send({message:"some error while creating product"});

@@ -19,6 +19,10 @@ const pdfSchema = new Schema({
     isRejected: {
         type: Boolean,
         default: false
+    },
+    isPublished: {
+        type: Boolean,
+        default: false
     }
 });
 
