@@ -21,6 +21,29 @@ function mailer(data) {
     })
 }
 
+function mailerShare(data) {
+    return new Promise((resolve, reject) => {
+        console.log(data);
+        const msg = {
+            to: data.recv,
+            from: 'fcsprojectotp@gmail.com',
+            templateId: "d-7aa4cc24407b4c9a8442d2dbdd015dce",
+            dynamic_template_data: data.sendingData
+        };
+        sgMail.send(msg)
+            .then(() => {
+                resolve(true);
+            })
+            .catch((err) => {
+                console.error(err);
+                reject(err);
+                return;
+            });
+    })
+}
 
 
-module.exports = mailer;
+
+module.exports.mailer = mailer;
+module.exports.mailerShare = mailerShare;
+// d-7aa4cc24407b4c9a8442d2dbdd015dce

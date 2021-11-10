@@ -7,6 +7,7 @@ var multer = require('multer');
 const otpGenerator = require('otp-generator');
 var ObjectId = require('mongodb').ObjectId;
 var upload = multer({dest:'../pdf'});
+const mailer = require('./mailer');
 //models
 const User = require('../models/user');
 const Product = require('../models/product');
@@ -138,6 +139,32 @@ productRouter.post('/pdfupload/:id',upload.single('pdf'),async(req,res)=>{
     }
 });
 
+productRouter.post('/share/:id',(req,res)=>{
+    let send=req.body;
+    console.log(send);
+    let data={
+        'recv': send.email,
+        'sendingData' : {
+            "link" : `product/${send.productId}`
+        }
+    }
+    // data.recv=req.email;
+    // data.link=`product/${req.productId}`;
+    User.findById(req.params.id).exec((err,user)=>{
+        if(err){
+            return res.status(400).send({message:"some problem in db"});
+        }
+        data.sendingData.senderEmail = user.email;
+        mailer.mailerShare(data).then((okay)=>{
+            res.status(200).send({message:"product shared with the email entered"});
+        })
+        .catch((err)=>{
+            res.status(400).send({message:"not shared"});
+        })
+
+    })
+
+});
 
 
 

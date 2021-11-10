@@ -1,6 +1,7 @@
 const otpGenerator = require('otp-generator');
 const OTP = require('../models/otp');
-const mailer = require('./mailer');
+var mailer1 = require('./mailer');
+const mailer = mailer1.mailer;
 function otpSend(email) {
     return new Promise((resolve, reject) => {
         let otpNum = otpGenerator.generate(6, { digits: true,alphabets: false, upperCase: false, specialChars: false });
