@@ -79,14 +79,15 @@ productRouter.post('/add/:id',(req,res) =>{
 
 
 
-productRouter.post('/imageupload',async(req,res)=>{
+productRouter.post('/imageupload',upload.any(),async(req,res)=>{
     try{
-        let images=req.body.image;
+        // console.log(req);
+        let images=req.files;
         let url=[];
         // console.log(image);
         // console.log(req.body);
         for(const image of images){
-            const uploadResponse = await cloudinary.uploader.upload(image,{upload_preset:'ml_default'});
+            const uploadResponse = await cloudinary.uploader.upload(image.path,{upload_preset:'ml_default'});
             // console.log(uploadResponse);
             url.push(uploadResponse.url);
         }
