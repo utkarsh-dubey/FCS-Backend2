@@ -8,6 +8,10 @@ const pdfSchema = new Schema({
         required: true,
         ref: user
     },
+    name:{
+        type: String,
+        default: "noName"
+    },
     pdf: {
         type: String,
         required: true
