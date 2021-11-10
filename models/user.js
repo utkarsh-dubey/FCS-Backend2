@@ -36,13 +36,16 @@ const userSchema = new Schema({
         type: String,
     },
     phoneNumber: {
-        type: 'String'
+        type: 'String',
+        default: null
     },
     GstNumber: {
-        type: 'String'
+        type: 'String',
+        default: null
     },
     PanNumber: {
-        type: 'String'
+        type: 'String',
+        default: null
     },
     isSeller: {
         type: Boolean,

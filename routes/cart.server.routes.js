@@ -49,7 +49,7 @@ cartRouter.route("/:id").get((req, res) => {
 
 
 cartRouter.route("/remove/:id").post((req,res) => {
-    if(!req.query.productId){
+    if(!req.body.productId){
         return res.status(400).send({message:"No product id found for deletion"});
     }
     req.body.productId=ObjectId(req.body.productId._id);
