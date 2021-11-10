@@ -13,11 +13,20 @@ var authenticate = require('../middleware/authenticate');
 
 route.get('/sendotp',(req,res)=>{
     if(req.query.email){
-        otpmethod.otpSend(req.query.email).then((okay)=>{
-            return res.status(200).send({message:"otp sent"});
-        }).catch((err)=>{
-            return res.status(400).send(err);
-        })
+        User.find({email:req.query.email}).exec((err,user)=>{
+            if(err){
+                return res.status(400).send({message:"problem in db"});
+            }
+            if(!(user.length===0)){
+                return res.status(400).send({message: "can't proceed for signup, email already taken!"});
+            }
+            otpmethod.otpSend(req.query.email).then((okay)=>{
+                return res.status(200).send({message:"otp sent"});
+            }).catch((err)=>{
+                return res.status(400).send(err);
+            })
+        });
+        
     }
     else{
         res.status(400).send({message:"send email"})
@@ -97,7 +106,7 @@ route.post("/user/signup", async (req, res, next) => {
   if (checkUser) {
     return res
       .status(400)
-      .json({ error: "Employer already exist.Go and Sign In" });
+      .json({ error: "user already exist.Go and log In" });
   }
   try {
     await user.save();
