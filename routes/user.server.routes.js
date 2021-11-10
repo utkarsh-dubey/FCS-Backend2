@@ -185,7 +185,7 @@ route.post('/become/seller/:id',passport.authenticate('jwt'),authenticate.matchI
   await existingUser.save();
 })
 
-route.get('/get/users',passport.authenticate('jwt'), async(req, res, next)=>{
+route.get('/get/users/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt, async(req, res, next)=>{
   const users = await User.find({});
   console.log(users)
   res.json(users);

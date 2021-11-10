@@ -55,7 +55,7 @@ pdfRouter.get('/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(re
     });
 })
 
-pdfRouter.get('/',passport.authenticate('jwt'),(req,res)=>{
+pdfRouter.get('/all/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res)=>{
     PDF.find({}).exec((err,pdfs)=>{
         if(err){
             return res.status(400).send({message:"some error in db"});
