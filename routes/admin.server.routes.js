@@ -13,7 +13,7 @@ const Product = require('../models/product');
 const PDF = require('../models/pdfs');
 
 
-adminRouter.post('/approve/:id',(res,req) =>{
+adminRouter.post('/approve/:id',(req,res) =>{
     let pdfId = req.query.pdfId;
     User.findById(req.params.id).exec((err,user) =>{
         if(err){
@@ -31,7 +31,7 @@ adminRouter.post('/approve/:id',(res,req) =>{
     });
 });
 
-adminRouter.post('/reject/:id',(res,req) =>{
+adminRouter.post('/reject/:id',(req,res) =>{
     let pdfId = req.query.pdfId;
     User.findById(req.params.id).exec((err,user) =>{
         if(err){
