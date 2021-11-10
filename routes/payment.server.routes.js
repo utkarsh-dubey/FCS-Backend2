@@ -10,6 +10,7 @@ const authenticate = require('../middleware/authenticate');
 const User = require('../models/user');
 const Cart = require('../models/cart');
 const Order = require('../models/order');
+const Product = require('../models/product');
 
 // console.log(stripe);
 paymentRouter.get('/checkout/:id',passport.authenticate('jwt'),authenticate.matchIdandJwt,async(req,res) =>{
@@ -137,13 +138,17 @@ paymentRouter.post('/orderupdate/:id',passport.authenticate('jwt'),authenticate.
                 for(let i=0;i<order.item.length;i++){
                     Product.findByIdAndUpdate(order.item[i].productId,{'$inc':{quantity: -order.item[i].quantity}}).catch((err)=>{
                         res.status(400).send({message:"error in db"});
-                    })
+                    });
                 }
-            })
+            }).catch((err)=>{
+                res.status(400).send({message:"error in db"});
+            });
         }).catch((err)=>{
             res.status(400).send({message:"error in db"});
         });
-        Cart.deleteOne({user: req.params.id});
+        Cart.deleteOne({user: req.params.id}).catch((err)=>{
+            res.status(400).send({message:"error in db"});
+        });
         return res.status(200).send({message:"updated for success"});
     }else{
         Order.findOneAndUpdate({transactionId:sessionId},{'$set':{status:'Failure'}});

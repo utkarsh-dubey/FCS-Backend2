@@ -52,7 +52,6 @@ cartRouter.route("/:id").get(passport.authenticate('jwt'),authenticate.matchIdan
 
 });
 
-
 cartRouter.route("/remove/:id").post(passport.authenticate('jwt'),authenticate.matchIdandJwt,(req,res) => {
     if(!req.body.productId){
         return res.status(400).send({message:"No product id found for deletion"});
