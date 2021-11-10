@@ -151,8 +151,12 @@ paymentRouter.post('/orderupdate/:id',passport.authenticate('jwt'),authenticate.
         });
         return res.status(200).send({message:"updated for success"});
     }else{
-        Order.findOneAndUpdate({transactionId:sessionId},{'$set':{status:'Failure'}});
-        return res.status(200).send({message:"updated for failure"});
+        Order.findOneAndUpdate({transactionId:sessionId},{'$set':{status:'Failure'}}).then((okay)=>{
+            return res.status(200).send({message:"updated for failure"});
+        }).catch((err)=>{
+            return res.status(400).send({message:"error in db"});
+        });
+        
     }
 });
 
