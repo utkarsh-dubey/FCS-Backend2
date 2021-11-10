@@ -40,8 +40,12 @@ cartRouter.post("/add",passport.authenticate('jwt'), (req, res) => {
 cartRouter.route("/:id").get(passport.authenticate('jwt'),authenticate.matchIdandJwt,(req, res) => {
 
     Cart.find({ user: req.params.id }).populate('products.productId').exec((err, cart) => {
+
         if (err) {
             return res.status(400).send({ "message": "some error occured in db" });
+        }
+        if(cart.length===0){
+            res.status(400).send({message:"cart empty"});
         }
         return res.status(200).send(cart);
     });
