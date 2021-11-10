@@ -63,7 +63,7 @@ cartRouter.route("/remove/:id").post((req,res) => {
         console.log(err);
         return res.status(400).send(err);
     });
-})
+});
 
 function getMap(id){
 
@@ -88,14 +88,29 @@ function getMap(id){
                     if(product.quantity<value){
                         map.set(key,product.quantity);
                     }
+                    count+=1;
+                    console.log(count);
                     console.log(map);
+                    if(count===map.size){
+                        console.log("resolving.....",count,map.size);
+                        resolve(map);
+                        return;
+                    }
                 });
-                count+=1;
+                
             }
             console.log("end of second");
-            if(count===map.size){
-                resolve(map);
-            }
+            // while(true){
+            //     console.log(count);
+            // }
+            // if(count===map.size){
+            //     console.log("resolving.....",count,map.size);
+            //     resolve(map);
+            // }
+        }).catch((err)=>{
+            reject(err);
+            return;
+            
         });
     });
 
@@ -103,7 +118,7 @@ function getMap(id){
 }
 
 cartRouter.get("/checkout/:id",(req,res) =>{
-    
+
 
 
     // let map2 = await getMap(req.params.id);
@@ -162,14 +177,16 @@ cartRouter.get("/checkout/:id",(req,res) =>{
                     if (err) {
                         return res.status(400).send({ "message": "some error occured in db" });
                     }
+                    check2+=1;
+                    if(check2===map2.size){
+                        Cart.find({ user: req.params.id }).populate('products.productId').exec((err, cart) => {
+                            return res.status(200).send(cart);
+                        });
+                    }
                 });
-                check2+=1;
+                
             }
-            if(check2===map2.size){
-                Cart.find({ user: req.params.id }).populate('products.productId').exec((err, cart) => {
-                    return res.status(200).send(cart);
-                });
-            }
+            
         }).catch((err)=>{
             console.log(err);
         });
