@@ -71,7 +71,7 @@ productRouter.post('/add/:id',passport.authenticate('jwt'),authenticate.matchIda
             product.sku = otpGenerator.generate(6,{digits:false});
             Product.create(product).then((product) => {
                 PDF.findByIdAndUpdate(pdfId,{'$set':{isPublished:true}}).then((done)=>{
-                    res.status(200).send({message:"product created"});
+                    res.status(200).send({message:"product created",done});
                 }).catch((err)=>{
                     res.status(400).send({message:"some error while creating product"});
                 })
