@@ -46,6 +46,19 @@ route.get('/verifyotp',(req,res)=>{
     }
 })
 
+route.post('/update/:id',(req,res)=>{
+    let user={};
+    user.firtName=req.body.firstName;
+    user.lastName=req.body.lastName;
+    user.gender=req.body.gender;
+    user.phoneNumber=req.body.phoneNumber;
+
+    User.findByIdAndUpdate(req.params.id,{'$set':req.body}).then((user)=>{
+        return res.status(200).send({message:"user updated"});
+    }).catch((err)=>{
+        return res.status(400).send(err);
+    });
+});
 
 route.get("/test",(req,res)=>{
     Product.updateMany({},{'$set':{'isAllowed':true}}).then((ok)=>{

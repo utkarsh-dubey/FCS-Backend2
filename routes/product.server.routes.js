@@ -66,7 +66,12 @@ productRouter.post('/add/:id',(req,res) =>{
             product.commission = 0.1*(product.price);
             product.sku = otpGenerator.generate(6,{digits:false});
             Product.create(product).then((product) => {
-                res.status(200).send({message:"product created"});
+                PDF.findByIdAndUpdate(pdfId,{'$set':{isPublished:true}}).then((done)=>{
+                    res.status(200).send({message:"product created"});
+                }).catch((err)=>{
+                    res.status(400).send({message:"some error while creating product"});
+                })
+                // res.status(200).send({message:"product created"});
             })
             .catch((err)=>{
                 res.status(400).send({message:"some error while creating product"});
@@ -79,14 +84,15 @@ productRouter.post('/add/:id',(req,res) =>{
 
 
 
-productRouter.post('/imageupload',async(req,res)=>{
+productRouter.post('/imageupload',upload.any(),async(req,res)=>{
     try{
-        let images=req.body.image;
+        // console.log(req);
+        let images=req.files;
         let url=[];
         // console.log(image);
         // console.log(req.body);
         for(const image of images){
-            const uploadResponse = await cloudinary.uploader.upload(image,{upload_preset:'ml_default'});
+            const uploadResponse = await cloudinary.uploader.upload(image.path,{upload_preset:'ml_default'});
             // console.log(uploadResponse);
             url.push(uploadResponse.url);
         }
