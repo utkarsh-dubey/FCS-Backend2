@@ -16,7 +16,7 @@ const PDF = require('../models/pdfs');
 
 productRouter.get("/",(req,res) =>{
     
-    let query={};
+    let query={"isAllowed":true};
     if(req.query.search){
         let search=req.query.search.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
         query={'$or' : [{'name' : {$regex :search, $options:'ix'}},{'category' :{$regex :search, $options:'ix'}}]};
@@ -76,41 +76,7 @@ productRouter.post('/add/:id',(req,res) =>{
     });
 });
 
-productRouter.post('admin/approve/:id',(res,req) =>{
-    let pdfId = req.query.pdfId;
-    User.findById(req.params.id).exec((err,user) =>{
-        if(err){
-            return res.status(400).send({message:"some error occured in db"});
-        }
-        if(!user.isAdmin){
-            return res.status(403).send({message:"you are not an admin, can't access this route"});
-        }
-        PDF.findByIdAndUpdate(pdfId,{isApproved:true}).exec((err,pdf)=>{
-            if(err){
-                return res.status(400).send({message:"some error occured in db"});
-            }
-            res.status(200).send({message:"approved"});
-        });
-    });
-});
 
-productRouter.post('admin/reject/:id',(res,req) =>{
-    let pdfId = req.query.pdfId;
-    User.findById(req.params.id).exec((err,user) =>{
-        if(err){
-            return res.status(400).send({message:"some error occured in db"});
-        }
-        if(!user.isAdmin){
-            return res.status(403).send({message:"you are not an admin, can't access this route"});
-        }
-        PDF.findByIdAndUpdate(pdfId,{isRejected:true}).exec((err,pdf)=>{
-            if(err){
-                return res.status(400).send({message:"some error occured in db"});
-            }
-            res.status(200).send({message:"rejected"});
-        });
-    });
-});
 
 
 productRouter.post('/imageupload',async(req,res)=>{

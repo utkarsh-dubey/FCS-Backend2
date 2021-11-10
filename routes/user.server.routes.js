@@ -9,7 +9,7 @@ const route = express.Router();
 const JWT = require("jsonwebtoken");
 const mongoose = require("mongoose");
 var authenticate = require('../middleware/authenticate');
-
+const Product = require('../models/product');
 
 route.get('/sendotp',(req,res)=>{
     if(req.query.email){
@@ -48,21 +48,11 @@ route.get('/verifyotp',(req,res)=>{
 
 
 route.get("/test",(req,res)=>{
-    
-    if(req.query.otp){
-        otpmethod.otpVerify('utkarsh19213@iiitd.ac.in',req.query.otp).then((okay)=>{
-            return res.status(200).send({message:"otp verified"});
-        }).catch((err)=>{
-            return res.status(400).send(err);
-        })
-    }
-    else{
-        otpmethod.otpSend('utkarsh19213@iiitd.ac.in').then((okay)=>{
-            return res.status(200).send({message:"send"});
-        }).catch((err)=>{
-            return res.status(400).send(err);
-        })
-    }
+    Product.updateMany({},{'$set':{'isAllowed':true}}).then((ok)=>{
+        return res.status(200).send(ok);
+    }).catch((err)=>{
+        return res.status(400).send();
+    });
 });
 
 
@@ -137,6 +127,9 @@ route.post('/user/login', async (req, res, next) => {
   }
   if (!existingUser) {
     return res.status(400).send("Employer does not exist please sign up first");
+  }
+  if(!existingUser.isAllowed){
+      return res.status(400).send("Can't login, banned by admin");
   }
   console.log(existingUser)
   const validPassword = await bcrypt.compare(

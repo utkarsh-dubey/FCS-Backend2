@@ -9,6 +9,7 @@ let productRouter = require('./routes/product.server.routes');
 let cartRouter = require('./routes/cart.server.routes');
 const userRoutes = require('./routes/user.server.routes');
 const pdfServerRoutes = require('./routes/pdf.server.routes');
+const adminRouter = require('./routes/admin.server.routes');
 const passport = require('passport');
 var multer = require('multer');
 var upload = multer();
@@ -57,6 +58,7 @@ app.use('/cart',cartRouter);
 app.use('/address',addressRouter);
 app.use('/product',productRouter);
 app.use('/pdf',pdfServerRoutes);
+app.use('/admin',adminRouter);
 app.get('/', (req, res) => {
   res.send('Hello World!')
 });
