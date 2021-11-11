@@ -11,6 +11,7 @@ const userRoutes = require('./routes/user.server.routes');
 const pdfServerRoutes = require('./routes/pdf.server.routes');
 const adminRouter = require('./routes/admin.server.routes');
 const passport = require('passport');
+var cors = require('cors')
 var multer = require('multer');
 var upload = multer();
 
@@ -23,11 +24,11 @@ app.use(bodyParser.json({
   limit: '50mb',
   extended: true
 }));
-// // app.use(
-// //   cors({
-// //     origin: ["http://localhost:3000", "https://checkout.stripe.com"],
-// //   })
-// // );
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://checkout.stripe.com"],
+  })
+);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -35,10 +36,10 @@ const limiter = rateLimit({
 });
 
 app.use((req, res, next)=>{
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE');
-  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Headers', '"Origin, X-Requested-With, Authorization"');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE');
+  // res.setHeader('Access-Control-Allow-Credentials', 'true');
   next()
 })
 // app.use(upload.array()); 
