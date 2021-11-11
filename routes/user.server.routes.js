@@ -151,7 +151,7 @@ route.post('/user/login', async (req, res, next) => {
     existingUser.password
   );
   if (!validPassword) {
-    return res.status(400).send("Invalid Password");
+    return res.status(400).send("Invalid email passsword combination");
   }
   //creating token
   try {
@@ -191,7 +191,7 @@ route.get('/get/users/:id',passport.authenticate('jwt'),authenticate.matchIdandJ
             return res.status(400).send({message:"some error occured in db"});
         }
         if(!user.isAdmin){
-            return res.status(403).send({message:"you are not an admin"});
+            return res.status(401).send({message:"you are not an admin"});
         }
         const users = await User.find({});
         console.log(users)

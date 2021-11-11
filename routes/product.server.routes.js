@@ -66,6 +66,9 @@ productRouter.post('/add/:id',passport.authenticate('jwt'),authenticate.matchIda
             if(!pdf.isApproved){
                 return res.status(400).send({message:"this product is not approved by the admin"});
             }
+            if(pdf.isPublished){
+                return res.status(400).send({message:"this product is published"});
+            }
             let product = req.body;
             product.commission = 0.1*(product.price);
             product.sku = otpGenerator.generate(6,{digits:false});

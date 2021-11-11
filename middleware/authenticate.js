@@ -59,10 +59,10 @@ exports.matchIdandJwt = function(req,res,next) {
     req.params.id = req.params.id.replace(" ","");
 
     if(req.params.id.length!==24){
-        return res.status(400).send({message:"invalid id used"});
+        return res.status(401).send({message:"invalid id used"});
     }
     if(!(decoded._id===req.params.id)){
-        res.status(403).send({message: "route id mismatch, use correct id"});
+        res.status(401).send({message: "route id mismatch, use correct id"});
     }
     else{
         next();
