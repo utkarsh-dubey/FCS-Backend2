@@ -7,9 +7,7 @@ function otpSend(email) {
         let otpNum = otpGenerator.generate(6, { digits: true,alphabets: false, upperCase: false, specialChars: false });
         const mailData = {
             recv: email,
-            otp: {
-                "verificationOtp": otpNum
-            }
+            otp: otpNum
         };
         console.log(mailData);
         mailer(mailData).then((value) => {
@@ -20,14 +18,19 @@ function otpSend(email) {
                 reject(err);
                 return;
             })
-
+        // mailer1.sesSend(email,otpNum).then((okay)=>{
+        //     resolve(true);
+        // }).catch((err)=>{
+        //     reject(err);
+        //     return;
+        // });
             // res.statusCode = 200;
             // res.setHeader('Content-Type', 'application/json');
             // res.json({
             //     msg: 'Otp sent'
             // });
-        })
-            .catch((err) => {
+        });
+            // .catch((err) => {
                 // console.log(err);
                 // res.statusCode = 400;
                 // res.setHeader('Content-Type', 'application/json');
@@ -36,10 +39,10 @@ function otpSend(email) {
                 // });
                 // // });
 
-                reject(err);
-                return;
+            //     reject(err);
+            //     return;
 
-            });
+            // });
 
     });
 }
