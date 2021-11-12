@@ -3,7 +3,7 @@ const sgMail2 = require('@sendgrid/mail');
 sgMail.setApiKey('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');
 sgMail2.setApiKey('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');
 const config = require('../config');
-var aws = require('aws-sdk');
+// var aws = require('aws-sdk');
 var nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
@@ -24,11 +24,11 @@ const transporter1 = nodemailer.createTransport({
     },
     secure: true,
 });
-aws.config.update({
-    accessKeyId: config.AWS_ACCESS_KEY,
-    secretAccessKey: config.AWS_PRIVATE_KEY
-});
-const ses = new aws.SES({region: 'us-east-1'});
+// aws.config.update({
+//     accessKeyId: config.AWS_ACCESS_KEY,
+//     secretAccessKey: config.AWS_PRIVATE_KEY
+// });
+// const ses = new aws.SES({region: 'us-east-1'});
 
 // console.log(ses);
 
@@ -116,7 +116,7 @@ function mailerShare(data) {
 }
 
 
-function sesSend(emailTo,otp){
+// function sesSend(emailTo,otp){
     // const params= {
     //     Destination: {
     //         ToAddresses: [emailTo]
@@ -141,12 +141,12 @@ function sesSend(emailTo,otp){
 
 
 
-}
+// }
 
 
 
 
 module.exports.mailer = mailer;
 module.exports.mailerShare = mailerShare;
-module.exports.sesSend = sesSend;
+// module.exports.sesSend = sesSend;
 // d-7aa4cc24407b4c9a8442d2dbdd015dce
