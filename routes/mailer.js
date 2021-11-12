@@ -1,8 +1,3 @@
-const sgMail = require('@sendgrid/mail');
-const sgMail2 = require('@sendgrid/mail');
-sgMail.setApiKey('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');
-sgMail2.setApiKey('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');
-const config = require('../config');
 // var aws = require('aws-sdk');
 var nodemailer = require('nodemailer');
 
