@@ -1,4 +1,7 @@
 const express = require('express');
+const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const mongoose = require('mongoose');
 const app = express();
 const rateLimit = require("express-rate-limit");
@@ -15,7 +18,12 @@ var cors = require('cors')
 var multer = require('multer');
 var upload = multer();
 
-
+var key = fs.readFileSync('./keys/private.key');
+var cert = fs.readFileSync('./keys/certificate.crt');
+var options = {
+  key: key,
+  cert: cert
+};
 
 require('dotenv/config');
 const port = 7000;
@@ -68,7 +76,8 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRoutes);
 
+var server = https.createServer(options, app);
 
-app.listen(process.env.PORT || port, () => {
+server.listen(process.env.PORT || port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
