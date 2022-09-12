@@ -32,9 +32,7 @@ app.use(bodyParser.json({
   extended: true
 }));
 app.use(
-  cors({
-    origin: ["*"],
-  })
+  cors()
 );
 
 const limiter = rateLimit({
