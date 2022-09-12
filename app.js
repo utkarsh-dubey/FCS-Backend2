@@ -17,8 +17,8 @@ var cors = require('cors')
 var multer = require('multer');
 var upload = multer();
 
-var key = fs.readFileSync('./keys/private.key');
-var cert = fs.readFileSync('./keys/certificate.crt');
+var key = fs.readFileSync('./keys2/key.pem');
+var cert = fs.readFileSync('./keys2/cert.crt');
 var options = {
   key: key,
   cert: cert
