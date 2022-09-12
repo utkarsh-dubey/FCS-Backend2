@@ -18,7 +18,7 @@ var multer = require('multer');
 var upload = multer();
 
 var key = fs.readFileSync('./keys2/key.pem');
-var cert = fs.readFileSync('./keys2/cert.crt');
+var cert = fs.readFileSync('./keys2/cert.pem');
 var options = {
   key: key,
   cert: cert
@@ -33,7 +33,7 @@ app.use(bodyParser.json({
 }));
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://checkout.stripe.com"],
+    origin: ["*"],
   })
 );
 
